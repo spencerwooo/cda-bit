@@ -1,13 +1,11 @@
-async function getData(station: string) {
-  const url = new URL(`http://${process.env.VERCEL_URL}/api/channels`)
-  url.searchParams.set('station', station)
+import { getChannels } from '@/app/lib/getChannels'
 
-  const res = await fetch(url, { cache: 'no-store' })
-  if (!res.ok) {
+async function getData(station: string) {
+  const res = await getChannels(station)
+  if ('error' in res) {
     throw new Error('Failed to fetch API')
   }
-
-  return res.json()
+  return res
 }
 
 export default async function Channel({ station }: { station: string }) {
