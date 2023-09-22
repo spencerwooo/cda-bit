@@ -1,8 +1,8 @@
 async function getData(station: string) {
-  const url = new URL('http://localhost:3000/api/channels')
+  const url = new URL(`${process.env.VERCEL_URL}/api/channels`)
   url.searchParams.set('station', station)
 
-  const res = await fetch(url, { next: { revalidate: 10 } })
+  const res = await fetch(url, { cache: 'no-store' })
   if (!res.ok) {
     throw new Error('Failed to fetch API')
   }

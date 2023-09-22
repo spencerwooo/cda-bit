@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Channel from '@/app/components/channel'
 
 const stations = [

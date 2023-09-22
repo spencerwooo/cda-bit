@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   }
 
   // fetch html
-  const res = await fetch(station)
+  const res = await fetch(station, { next: { revalidate: 10 } })
   const data = await res.text()
 
   // parse markup with cheerio
