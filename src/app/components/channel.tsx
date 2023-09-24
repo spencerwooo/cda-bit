@@ -49,21 +49,12 @@ export default function Channel({
   const channelMap = data.channelMap
   const deviceName = data.deviceName
 
-  const statusMap: { [key: string]: string[] } = {
+  const statusMap = {
     D: ['未启用', 'border-gray-300'],
     E: ['启动', 'border-green-300'],
     I: ['空闲', 'border-green-400 bg-green-400/20'],
     C: ['充电中', 'border-yellow-400'],
     P: ['启动中', 'border-blue-300 bg-blue-300/20'],
-    default: ['无效', ''],
-  }
-
-  function getLabel(status: string) {
-    return status in statusMap ? statusMap[status][0] : statusMap.default[0]
-  }
-
-  function getStyle(status: string) {
-    return status in statusMap ? statusMap[status][1] : statusMap.default[1]
   }
 
   return (
@@ -82,9 +73,9 @@ export default function Channel({
         {Object.keys(channelMap).map(key => (
           <li
             key={key}
-            className={`relative border-y-2 p-2 pr-3 ${getStyle(
-              channelMap[key].channelStatus
-            )}`}
+            className={`relative border-y-2 p-2 pr-3 ${
+              statusMap[channelMap[key].channelStatus][1]
+            }`}
           >
             {channelMap[key].channelStatus === 'C' && (
               <span
@@ -96,7 +87,7 @@ export default function Channel({
             )}
             <div className="text-xs">{key}</div>
             <div className="text-sm">
-              {getLabel(channelMap[key].channelStatus)}
+              {statusMap[channelMap[key].channelStatus][0]}
             </div>
           </li>
         ))}

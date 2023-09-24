@@ -43,7 +43,7 @@ export default async function Home() {
           ))}
         </div>
       </div>
-      <footer className="text-xs text-center my-4">
+      <footer className="text-xs text-center mt-12 mb-4">
         Made with ❤️ SpencerWoo
       </footer>
     </main>
