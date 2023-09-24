@@ -1,15 +1,28 @@
-import { getChannels } from '@/app/lib/getChannels'
+'use client'
+import swr from 'swr'
 
-async function getData(station: string) {
-  const res = await getChannels(station)
-  if ('error' in res) {
-    throw new Error('Failed to fetch API')
+const fetcher = (url: string) => fetch(url).then(res => res.json())
+
+export default function Channel({ station }: { station: string }) {
+  const channelUrl = new URL('http://localhost:3000/api')
+  channelUrl.searchParams.set('station', station)
+
+  const { data, error, isLoading, isValidating, mutate } = swr(
+    channelUrl.toString(),
+    fetcher,
+    {
+      refreshInterval: 1000 * 10, // 10s
+    }
+  )
+
+  if (isLoading) {
+    return <div className="py-2">Loading...</div>
   }
-  return res
-}
 
-export default async function Channel({ station }: { station: string }) {
-  const data = await getData(station)
+  if (!data) {
+    const errorMessage = error?.message || 'Unknown error.'
+    return <div className="py-2">Error: {errorMessage}</div>
+  }
 
   const channelMap = data.channelMap
   const deviceName = data.deviceName
@@ -44,14 +57,14 @@ export default async function Channel({ station }: { station: string }) {
           >
             {channelMap[key].channelStatus === 'C' && (
               <span
-                className="absolute left-0 bottom-0 right-0 bg-yellow-300/20 z-0"
+                className="absolute left-0 bottom-0 right-0 bg-yellow-300/20 -z-10"
                 style={{
                   top: (channelMap[key].chargedTime / (9 * 60)) * 100 + '%',
                 }}
               />
             )}
-            <div className="text-xs z-10">{key}</div>
-            <div className="text-sm z-10">
+            <div className="text-xs">{key}</div>
+            <div className="text-sm">
               {getLabel(channelMap[key].channelStatus)}
             </div>
           </li>

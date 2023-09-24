@@ -15,7 +15,7 @@ const stations = [
 
 export default async function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between bg-neutral-900 text-white">
+    <main className="flex min-h-screen flex-col items-center justify-between">
       <div>
         <div className="text-lg my-4">🔋 Charging Stations</div>
         <div className="grid lg:grid-cols-2 gap-4">
