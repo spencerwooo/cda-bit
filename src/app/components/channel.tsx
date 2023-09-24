@@ -1,27 +1,49 @@
 'use client'
-import swr from 'swr'
+import useSWR from 'swr'
+import { ChannelDetails } from '../types'
 
 const fetcher = (url: string) => fetch(url).then(res => res.json())
 
-export default function Channel({ station }: { station: string }) {
-  const channelUrl = new URL('http://localhost:3000/api')
-  channelUrl.searchParams.set('station', station)
+export default function Channel({
+  name,
+  station,
+}: {
+  name: string
+  station: string
+}) {
+  const channelUrl = `/api?station=${encodeURIComponent(station)}`
 
-  const { data, error, isLoading, isValidating, mutate } = swr(
-    channelUrl.toString(),
+  const { data, error, isLoading, isValidating } = useSWR<ChannelDetails>(
+    channelUrl,
     fetcher,
-    {
-      refreshInterval: 1000 * 10, // 10s
-    }
+    { refreshInterval: 1000 * 30 }
   )
 
   if (isLoading) {
-    return <div className="py-2">Loading...</div>
+    return (
+      <div className="w-[21.375rem] h-[12rem] py-2">
+        <div className="font-bold">{name}</div>
+        <div className="text-sm opacity-60 bg-gray-300 dark:bg-neutral-700 h-4 rounded-md mt-2 animate-pulse"></div>
+        <ul className="grid grid-cols-5 mt-2 gap-2 animate-pulse">
+          {[...Array(10)].map((_, index) => (
+            <li
+              key={index}
+              className="relative w-[3.875rem] h-[3.5rem] bg-gray-300 dark:bg-neutral-700 rounded-md"
+            ></li>
+          ))}
+        </ul>
+      </div>
+    )
   }
 
   if (!data) {
     const errorMessage = error?.message || 'Unknown error.'
-    return <div className="py-2">Error: {errorMessage}</div>
+    return (
+      <div className="w-[21.375rem] h-[12rem] py-2">
+        <div className="font-bold">{name}</div>
+        <div className="text-sm text-red-500 mt-2">Error: {errorMessage}</div>
+      </div>
+    )
   }
 
   const channelMap = data.channelMap
@@ -46,7 +68,16 @@ export default function Channel({ station }: { station: string }) {
 
   return (
     <div className="py-2">
-      <div className="font-bold">{deviceName}</div>
+      <div className="font-bold">{name}</div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center">
+          <span className="text-sm opacity-60">{deviceName}</span>
+          <span className="icon-[iconoir--pin-alt] w-4 h-4 ml-1"></span>
+        </div>
+        {isValidating ? (
+          <span className="icon-[iconoir--refresh-double] w-3 h-3 ml-1 animate-spin"></span>
+        ) : null}
+      </div>
       <ul className="grid grid-cols-5 mt-2 gap-2">
         {Object.keys(channelMap).map(key => (
           <li

@@ -1,4 +1,3 @@
-import { ChannelDetails } from '../types'
 import { NextRequest, NextResponse } from 'next/server'
 
 /**
@@ -14,7 +13,7 @@ export async function GET(req: NextRequest) {
   }
 
   // fetch html
-  const res = await fetch(station)
+  const res = await fetch(station, { next: { revalidate: 1 * 60 } })
   const data = await res.text()
 
   // // parse markup with cheerio
@@ -34,7 +33,7 @@ export async function GET(req: NextRequest) {
 
   // extract json by removing leading "details = " and trailing ";"
   const rawDetails = match[0].replace('details = ', '').replace(';', '')
-  const details = JSON.parse(rawDetails) as ChannelDetails
+  const details = JSON.parse(rawDetails)
 
   return NextResponse.json(details)
 }
