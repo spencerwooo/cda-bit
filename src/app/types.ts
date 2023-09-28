@@ -1,3 +1,5 @@
+import { object, type Output, string, url } from 'valibot'
+
 export interface ChannelDetails {
   rateList: RateList[]
   returnCode: string
@@ -55,3 +57,10 @@ export interface RateList {
   unitAmount: number
   operatorId: number
 }
+
+export const StationSchema = object({
+  name: string(),
+  url: string([url()]),
+})
+
+export type StationData = Output<typeof StationSchema>
