@@ -5,9 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@rehooks/local-storage':
-    specifier: ^2.4.5
-    version: 2.4.5(react@18.2.0)
   '@types/node':
     specifier: 20.7.1
     version: 20.7.1
@@ -47,6 +44,9 @@ dependencies:
   typescript:
     specifier: 5.2.2
     version: 5.2.2
+  use-local-storage-state:
+    specifier: ^19.1.0
+    version: 19.1.0(react-dom@18.2.0)(react@18.2.0)
 
 devDependencies:
   '@iconify-json/iconoir':
@@ -284,15 +284,6 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
-
-  /@rehooks/local-storage@2.4.5(react@18.2.0):
-    resolution: {integrity: sha512-3Q4KtiUBaKoIDRK72BWfAy50ul6hbw29f/M7tyCzlMe2FbSsiQNok0WGeBLaYj4T2PJ7JMSJlSbUGY8RNsImmw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      react: '>=16.8.0'
-    dependencies:
-      react: 18.2.0
-    dev: false
 
   /@rushstack/eslint-patch@1.5.0:
     resolution: {integrity: sha512-EF3948ckf3f5uPgYbQ6GhyA56Dmv8yg0+ir+BroRjwdxyZJsekhZzawOecC2rOTPCz173t7ZcR1HHZu0dZgOCw==}
@@ -2507,6 +2498,17 @@ packages:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
     dependencies:
       punycode: 2.3.0
+
+  /use-local-storage-state@19.1.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-3Ea6uRtRaSwpZYD9maZPKoEEGRuHmVA7zGrV/Uh9s5NTj9K1x/MB4IOQoywjUesQyhXmJq6bqjC5cAqlsXoOTw==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: '>=18'
+      react-dom: '>=18'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /use-sync-external-store@1.2.0(react@18.2.0):
     resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
