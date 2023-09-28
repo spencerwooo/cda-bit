@@ -2,7 +2,14 @@
 import useSWR from 'swr'
 import { ChannelDetails } from '../types'
 
-const fetcher = (url: string) => fetch(url).then(res => res.json())
+async function fetcher(url: string) {
+  const res = await fetch(url)
+  if (!res.ok) {
+    const error = await res.json()
+    throw new Error(error.error)
+  }
+  return res.json()
+}
 
 export default function Channel({
   name,

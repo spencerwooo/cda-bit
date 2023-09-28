@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   const url = new URL(req.nextUrl)
   const station = url.searchParams.get('station')
   if (station === null) {
-    return new Response('station not found', { status: 500 })
+    return NextResponse.json({ error: 'station not found' }, { status: 500 })
   }
 
   // fetch html
@@ -28,12 +28,19 @@ export async function GET(req: NextRequest) {
   // find markup with regex /details = {.*}/
   const match = data.match(/details = {.*}/)
   if (match === null) {
-    return new Response('details not found', { status: 500 })
+    return NextResponse.json({ error: 'details not found' }, { status: 500 })
   }
 
   // extract json by removing leading "details = " and trailing ";"
   const rawDetails = match[0].replace('details = ', '').replace(';', '')
-  const details = JSON.parse(rawDetails)
-
-  return NextResponse.json(details)
+  try {
+    // try parsing json, if valid, return it
+    const details = JSON.parse(rawDetails)
+    return NextResponse.json(details)
+  } catch (error) {
+    return NextResponse.json(
+      { error: `error parsing details: ${error}` },
+      { status: 500 }
+    )
+  }
 }
