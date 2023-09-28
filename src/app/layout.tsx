@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
   manifest: 'site.webmanifest',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: light)', color: '#BECB4D' },
     { media: '(prefers-color-scheme: dark)', color: '#171717' },
   ],
 }

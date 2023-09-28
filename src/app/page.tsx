@@ -1,4 +1,6 @@
+import Image from 'next/image'
 import Channel from '@/app/components/channel'
+import evHeaderImg from './header.png'
 
 const stations = [
   {
@@ -26,9 +28,15 @@ const stations = [
 export default async function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
-      <div>
-        <div className="my-4 relative inline-block">
-          <span className="icon-[iconoir--ev-plug-charging] w-6 h-6"></span>
+      <Image
+        alt="Electric bike charging station (Header)"
+        src={evHeaderImg}
+        placeholder="blur"
+        className="w-full absolute top-0 left-0 right-0 -z-10 object-cover object-bottom h-[17rem]"
+      />
+      <div className="mt-32">
+        <div className="mb-4 relative inline-block">
+          <span className="icon-[iconoir--ev-plug-charging] w-8 h-8"></span>
           <div className="absolute bottom-0.5 -right-1">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
           </div>
