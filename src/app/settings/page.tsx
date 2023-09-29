@@ -1,12 +1,28 @@
 'use client'
 
+import { useState } from 'react'
+import Link from 'next/link'
 import useLocalStorageState from 'use-local-storage-state'
+import {
+  closestCenter,
+  DndContext,
+  DragOverlay,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
 
 import { StationData } from '@/app/types'
-import Link from 'next/link'
-import { useState } from 'react'
 import StationEditModal from './edit-modal'
 import StationDeleteConfirmModal from './confirm-delete-modal'
+import SortableStationItem, { Item } from './sortable-station-item'
 
 export default function Settings() {
   const [stations, setStations] = useLocalStorageState<StationData[]>(
@@ -32,6 +48,33 @@ export default function Settings() {
   function openStationDeleteConfirmModal(idx: number) {
     setTargetStationIdx(idx)
     setDeleteModalOpen(true)
+  }
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  function handleDragStart(event: any) {
+    const { active } = event
+
+    setTargetStationIdx(active.id)
+  }
+
+  function handleDragEnd(event: any) {
+    const { active, over } = event
+
+    if (active.id !== over.id) {
+      const newStations = arrayMove(
+        stations,
+        active.id,
+        over.id
+      ) as StationData[]
+      setStations(newStations)
+    }
+    setTargetStationIdx(-1)
   }
 
   return (
@@ -62,40 +105,32 @@ export default function Settings() {
       <div className="w-full text-center flex-1">
         {stations.length > 0 ? (
           <ul className="border-b dark:border-neutral-700">
-            {stations.map((station, idx) => (
-              <li
-                key={idx}
-                className="flex items-center relative border-t dark:border-neutral-700 px-4 text-left hover:cursor-pointer hover:bg-neutral-200/20 overflow-hidden"
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={stations.map((_, id) => id)}
+                strategy={verticalListSortingStrategy}
               >
-                <span className="absolute -bottom-5 -right-4 text-8xl font-black opacity-10 font-mono rotate-12 -z-10">
-                  {idx + 1}
-                </span>
-
-                <button className="icon-[iconoir--menu] w-5 h-5 flex-shrink-0 mr-4" />
-
-                <div
-                  className="overflow-hidden mr-4 flex-1 py-3"
-                  onClick={() => openStationEditModal(idx)}
-                >
-                  <div className="flex items-center">
-                    <span className="font-bold mr-2 truncate">
-                      {station.name}
-                    </span>
-                    <span className="icon-[iconoir--edit-pencil] w-4 h-4" />
-                  </div>
-                  <div className="text-xs mt-1 opacity-80 overflow-scroll">
-                    {station.url}
-                  </div>
-                </div>
-
-                <button
-                  className="p-3 pt-4 rounded-lg text-white bg-gradient-to-br from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800"
-                  onClick={() => openStationDeleteConfirmModal(idx)}
-                >
-                  <span className="icon-[iconoir--trash] w-5 h-5" />
-                </button>
-              </li>
-            ))}
+                {stations.map((station, idx) => (
+                  <SortableStationItem
+                    key={idx}
+                    idx={idx}
+                    station={station}
+                    openStationEditModal={openStationEditModal}
+                    openStationDeleteConfirmModal={
+                      openStationDeleteConfirmModal
+                    }
+                  />
+                ))}
+              </SortableContext>
+              <DragOverlay>
+                {targetStationIdx !== null ? <Item idx={targetStationIdx} /> : null}
+              </DragOverlay>
+            </DndContext>
           </ul>
         ) : (
           <div className="opacity-80 text-sm">还没有添加充电站二维码链接…</div>

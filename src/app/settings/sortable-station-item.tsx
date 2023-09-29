@@ -5,12 +5,10 @@ import { forwardRef } from 'react'
 
 import { Ref } from 'react'
 
-export const Item = forwardRef<HTMLDivElement, { id: number }>(
-  ({ id, ...props }, ref: Ref<HTMLDivElement>) => {
+export const Item = forwardRef<HTMLDivElement, { idx: number }>(
+  ({ idx, ...props }, ref: Ref<HTMLDivElement>) => {
     return (
-      <div {...props} ref={ref}>
-        {id}
-      </div>
+      <div {...props} ref={ref} />
     )
   }
 )
