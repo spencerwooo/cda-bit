@@ -10,29 +10,6 @@ import Channel from '@/app/channel'
 import { StationData, StationSchema } from '@/app/types'
 import evHeaderImg from '@/app/header.png'
 
-// const stations = [
-//   {
-//     name: '硕博2 #1',
-//     url: 'http://wx.99cda.com/cda-wx/chargingBike.do?q=0400000000001532&qType=device&openId=ozCzC0p1m5Tm_BUHr_pQDS5HZCw8',
-//   },
-//   {
-//     name: '硕博2 #2',
-//     url: 'http://wx.99cda.com/cda-wx/chargingBike.do?q=0400000000011639&qType=device&openId=ozCzC0p1m5Tm_BUHr_pQDS5HZCw8',
-//   },
-//   {
-//     name: '小麦公社西侧',
-//     url: 'http://wx.99cda.com/cda-wx/chargingBike.do?q=0400000000013510&qType=device&openId=ozCzC0p1m5Tm_BUHr_pQDS5HZCw8',
-//   },
-//   {
-//     name: '光电楼北侧',
-//     url: 'http://wx.99cda.com/cda-wx/chargingBike.do?q=0400000000013707&qType=device&openId=ozCzC0p1m5Tm_BUHr_pQDS5HZCw8',
-//   },
-//   {
-//     name: '求是楼南侧',
-//     url: 'http://wx.99cda.com/cda-wx/chargingBike.do?q=0400000000013985&qType=device&openId=ozCzC0p1m5Tm_BUHr_pQDS5HZCw8',
-//   },
-// ]
-
 function Onboarding() {
   return (
     <div className="mt-8">
@@ -94,13 +71,18 @@ export default function Home() {
           )}
         </div>
       </div>
-      <footer className="flex w-full px-4 justify-between text-xs mt-12 mb-4">
-        <div className="inline-flex items-center border-b-2">
-          <Link href="/settings">修改设置</Link>
-          <span className="icon-[iconoir--arrow-right] w-3 h-3 ml-1"></span>
-        </div>
-        <div>Made with ❤️ SpencerWoo</div>
-      </footer>
+
+      <div className="mt-8">
+        <Link href="/settings">
+          <button className="mt-4 flex items-center text-neutral-900 bg-white border border-neutral-300 focus:outline-none hover:bg-neutral-100 focus:ring-4 focus:ring-neutral-200 font-medium rounded-lg text-sm px-8 py-2.5 dark:bg-neutral-800 dark:text-white dark:border-neutral-600 dark:hover:bg-neutral-700 dark:hover:border-neutral-600 dark:focus:ring-neutral-700">
+            配置充电站列表
+            <span className="icon-[iconoir--arrow-right] w-4 h-4 ml-2" />
+          </button>
+        </Link>
+        <footer className="text-center text-xs mt-8 mb-4 opacity-60">
+          Made with ❤️ SpencerWoo
+        </footer>
+      </div>
     </main>
   )
 }
