@@ -15,7 +15,7 @@ function Onboarding() {
     <div className="mt-8">
       <div className="opacity-80 mb-4">尚未添加充电站二维码链接...</div>
       <Link href="/settings">
-        <button className="flex items-center font-bold">
+        <button className="mt-4 -ml-1 flex items-center text-neutral-900 bg-white border border-neutral-300 focus:outline-none hover:bg-neutral-100 focus:ring-4 focus:ring-neutral-200 font-bold rounded-lg px-4 py-2.5 dark:bg-neutral-800 dark:text-white dark:border-neutral-600 dark:hover:bg-neutral-700 dark:hover:border-neutral-600 dark:focus:ring-neutral-700">
           点击设置
           <span className="icon-[iconoir--arrow-right] w-4 h-4 ml-2" />
         </button>
@@ -73,13 +73,15 @@ export default function Home() {
       </div>
 
       <div className="mt-8">
-        <Link href="/settings">
-          <button className="mt-4 flex items-center text-neutral-900 bg-white border border-neutral-300 focus:outline-none hover:bg-neutral-100 focus:ring-4 focus:ring-neutral-200 font-medium rounded-lg text-sm px-8 py-2.5 dark:bg-neutral-800 dark:text-white dark:border-neutral-600 dark:hover:bg-neutral-700 dark:hover:border-neutral-600 dark:focus:ring-neutral-700">
-            配置充电站列表
-            <span className="icon-[iconoir--arrow-right] w-4 h-4 ml-2" />
-          </button>
-        </Link>
-        <footer className="text-center text-xs mt-8 mb-4 opacity-60">
+        {stations.length > 0 && (
+          <Link href="/settings">
+            <button className="mt-4 flex items-center text-neutral-900 bg-white border border-neutral-300 focus:outline-none hover:bg-neutral-100 focus:ring-4 focus:ring-neutral-200 font-medium rounded-lg text-sm px-8 py-2.5 dark:bg-neutral-800 dark:text-white dark:border-neutral-600 dark:hover:bg-neutral-700 dark:hover:border-neutral-600 dark:focus:ring-neutral-700">
+              配置充电站列表
+              <span className="icon-[iconoir--arrow-right] w-4 h-4 ml-2" />
+            </button>
+          </Link>
+        )}
+        <footer className="text-center text-xs mt-8 mb-4 opacity-80">
           Made with ❤️ SpencerWoo
         </footer>
       </div>

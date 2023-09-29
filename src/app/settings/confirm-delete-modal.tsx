@@ -21,10 +21,7 @@ export default function StationDeleteConfirmModal({
 
   function handleDelete() {
     if (stationEditIdx >= 0) {
-      // delete station at index
-      console.log('delete station at index', stationEditIdx)
       const newStations = stations.filter((_, idx) => idx !== stationEditIdx)
-      console.log('newStations', newStations)
       setStations(newStations)
       closeModal()
     }

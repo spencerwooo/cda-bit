@@ -1,9 +1,10 @@
 'use client'
 
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { Dialog } from '@headlessui/react'
+import { Issues, ValiError, parse } from 'valibot'
 
-import { StationData } from '@/app/types'
+import { StationData, StationSchema } from '@/app/types'
 import LayoutModal from './layout-modal'
 
 export default function StationEditModal({
@@ -18,28 +19,42 @@ export default function StationEditModal({
   const [isOpen, setIsOpen] = openState
   const [stations, setStations] = stationsState
 
+  const [formError, setFormError] = useState<string>('')
+
   function closeModal() {
     setIsOpen(false)
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-
     const formData = new FormData(e.currentTarget)
-    const editedStation = Object.fromEntries(formData.entries()) as StationData
 
-    if (stationEditIdx >= 0) {
-      // edit station at index
-      const newStations = stations.map((station, idx) =>
-        idx === stationEditIdx ? editedStation : station
-      )
-      setStations(newStations)
-    } else {
-      // add new station
-      const newStations = [...stations, editedStation]
-      setStations(newStations)
+    // validate station data
+    try {
+      const stationData = Object.fromEntries(formData.entries())
+      const editedStation = parse(StationSchema, stationData)
+
+      if (stationEditIdx >= 0) {
+        // edit station at index
+        const newStations = stations.map((station, idx) =>
+          idx === stationEditIdx ? editedStation : station
+        )
+        setStations(newStations)
+      } else {
+        // add new station
+        const newStations = [...stations, editedStation]
+        setStations(newStations)
+      }
+
+      closeModal()
+    } catch (error) {
+      if (error instanceof ValiError) {
+        setFormError(error.message)
+        setTimeout(() => {
+          setFormError('')
+        }, 1000 * 5)
+      }
     }
-    closeModal()
   }
 
   return (
@@ -51,6 +66,13 @@ export default function StationEditModal({
         >
           {stationEditIdx >= 0 ? '修改' : '添加新的'}充电站
         </Dialog.Title>
+
+        {formError && (
+          <div className="mt-4 relative p-2 text-red-800 border-l-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800">
+            <span className="absolute top-3 left-2 icon-[iconoir--warning-circle] w-4 h-4"></span>
+            <span className="ml-6">{formError}</span>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="mt-4">

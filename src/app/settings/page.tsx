@@ -98,7 +98,7 @@ export default function Settings() {
             ))}
           </ul>
         ) : (
-          <div>...</div>
+          <div className="opacity-80 text-sm">还没有添加充电站二维码链接…</div>
         )}
       </div>
 
