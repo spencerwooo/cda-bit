@@ -2,7 +2,7 @@
 
 import { Dispatch, SetStateAction, useState } from 'react'
 import { Dialog } from '@headlessui/react'
-import { Issues, ValiError, parse } from 'valibot'
+import { ValiError, parse } from 'valibot'
 
 import { StationData, StationSchema } from '@/app/types'
 import LayoutModal from './layout-modal'

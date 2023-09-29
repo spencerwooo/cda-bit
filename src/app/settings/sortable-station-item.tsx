@@ -1,31 +1,56 @@
-import { useSortable } from '@dnd-kit/sortable'
+import {
+  useSortable,
+  defaultAnimateLayoutChanges,
+  AnimateLayoutChanges,
+} from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { StationData } from '../types'
 import { forwardRef } from 'react'
 
-import { Ref } from 'react'
+import { StationData } from '../types'
 
-export const Item = forwardRef<HTMLDivElement, { idx: number }>(
-  ({ idx, ...props }, ref: Ref<HTMLDivElement>) => {
-    return (
-      <div {...props} ref={ref} />
-    )
-  }
-)
+// eslint-disable-next-line react/display-name
+export const RefStationItem = forwardRef<
+  HTMLDivElement,
+  { id: string; stations: StationData[] }
+>(({ id, stations, ...props }, ref) => {
+  const idx = stations.findIndex(station => station.url === id)
+  return (
+    <div {...props} ref={ref as React.Ref<HTMLDivElement>}>
+      <SortableStationItem
+        id={id}
+        idx={idx}
+        station={stations[idx]}
+        openStationEditModal={() => {}}
+        openStationDeleteConfirmModal={() => {}}
+      />
+    </div>
+  )
+})
+
+const animateLayoutChanges: AnimateLayoutChanges = args =>
+  defaultAnimateLayoutChanges({ ...args, wasDragging: true })
 
 export default function SortableStationItem({
+  id,
   idx,
   station,
   openStationEditModal,
   openStationDeleteConfirmModal,
 }: {
+  id: string
   idx: number
   station: StationData
   openStationEditModal: (idx: number) => void
   openStationDeleteConfirmModal: (idx: number) => void
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: idx })
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    setActivatorNodeRef,
+    transform,
+    transition,
+  } = useSortable({ animateLayoutChanges, id })
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -33,17 +58,20 @@ export default function SortableStationItem({
 
   return (
     <li
-      className="flex items-center relative border-t dark:border-neutral-700 pl-2 pr-4 text-left overflow-hidden hover:cursor-pointer hover:bg-neutral-200/20"
+      className="flex items-center relative bg-white border-t dark:border-neutral-700 pl-2 pr-4 text-left overflow-hidden hover:cursor-pointer hover:bg-neutral-50"
       ref={setNodeRef}
       style={style}
       {...attributes}
-      {...listeners}
     >
       <span className="absolute -bottom-5 -right-4 text-8xl font-black opacity-10 font-mono rotate-12 -z-10">
         {idx + 1}
       </span>
 
-      <button className="p-2 pt-3 flex-shrink-0 rounded-lg hover:cursor-move focus:outline-none hover:bg-neutral-100 focus:ring-4 focus:ring-neutral-200 dark:hover:bg-neutral-700 dark:hover:border-neutral-600 dark:focus:ring-neutral-700">
+      <button
+        ref={setActivatorNodeRef}
+        className="p-2 pt-3 flex-shrink-0 rounded-lg hover:cursor-move focus:outline-none hover:bg-neutral-100 focus:ring-4 focus:ring-neutral-200 dark:hover:bg-neutral-700 dark:hover:border-neutral-600 dark:focus:ring-neutral-700"
+        {...listeners}
+      >
         <span className="icon-[iconoir--menu] w-5 h-5"></span>
       </button>
 

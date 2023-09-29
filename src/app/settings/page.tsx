@@ -6,8 +6,11 @@ import useLocalStorageState from 'use-local-storage-state'
 import {
   closestCenter,
   DndContext,
+  DragEndEvent,
   DragOverlay,
+  DragStartEvent,
   KeyboardSensor,
+  MeasuringStrategy,
   PointerSensor,
   useSensor,
   useSensors,
@@ -22,7 +25,7 @@ import {
 import { StationData } from '@/app/types'
 import StationEditModal from './edit-modal'
 import StationDeleteConfirmModal from './confirm-delete-modal'
-import SortableStationItem, { Item } from './sortable-station-item'
+import SortableStationItem, { RefStationItem } from './sortable-station-item'
 
 export default function Settings() {
   const [stations, setStations] = useLocalStorageState<StationData[]>(
@@ -34,6 +37,7 @@ export default function Settings() {
   const [isEditModalOpen, setEditModalOpen] = useState(false)
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
   const [targetStationIdx, setTargetStationIdx] = useState(-1)
+  const [dndActiveId, setDndActiveId] = useState<string | null>(null)
 
   function openNewStationModal() {
     setTargetStationIdx(-1)
@@ -56,25 +60,24 @@ export default function Settings() {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   )
+  const measuringConfig = { droppable: { strategy: MeasuringStrategy.Always } }
 
-  function handleDragStart(event: any) {
+  function handleDragStart(event: DragStartEvent) {
     const { active } = event
-
-    setTargetStationIdx(active.id)
+    setDndActiveId(active.id as string)
   }
 
-  function handleDragEnd(event: any) {
+  function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
 
-    if (active.id !== over.id) {
-      const newStations = arrayMove(
-        stations,
-        active.id,
-        over.id
-      ) as StationData[]
-      setStations(newStations)
+    if (over !== null && active.id !== over.id) {
+      setStations(stations => {
+        const oldIndex = stations.findIndex(s => s.url === active.id)
+        const newIndex = stations.findIndex(s => s.url === over.id)
+        return arrayMove(stations, oldIndex, newIndex)
+      })
     }
-    setTargetStationIdx(-1)
+    setDndActiveId(null)
   }
 
   return (
@@ -107,17 +110,19 @@ export default function Settings() {
           <ul className="border-b dark:border-neutral-700">
             <DndContext
               sensors={sensors}
+              measuring={measuringConfig}
               collisionDetection={closestCenter}
               onDragStart={handleDragStart}
               onDragEnd={handleDragEnd}
             >
               <SortableContext
-                items={stations.map((_, id) => id)}
+                items={stations.map(s => s.url)}
                 strategy={verticalListSortingStrategy}
               >
                 {stations.map((station, idx) => (
                   <SortableStationItem
                     key={idx}
+                    id={station.url}
                     idx={idx}
                     station={station}
                     openStationEditModal={openStationEditModal}
@@ -128,7 +133,9 @@ export default function Settings() {
                 ))}
               </SortableContext>
               <DragOverlay>
-                {targetStationIdx !== null ? <Item idx={targetStationIdx} /> : null}
+                {dndActiveId !== null ? (
+                  <RefStationItem id={dndActiveId} stations={stations} />
+                ) : null}
               </DragOverlay>
             </DndContext>
           </ul>
