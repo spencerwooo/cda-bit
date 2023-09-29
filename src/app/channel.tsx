@@ -1,6 +1,7 @@
 'use client'
+
 import useSWR from 'swr'
-import { ChannelDetails } from '../types'
+import { ChannelDetails } from './types'
 
 async function fetcher(url: string) {
   const res = await fetch(url)

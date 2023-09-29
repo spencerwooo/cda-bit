@@ -1,3 +1,5 @@
+import { object, type Output, string, url, maxLength } from 'valibot'
+
 export interface ChannelDetails {
   rateList: RateList[]
   returnCode: string
@@ -55,3 +57,12 @@ export interface RateList {
   unitAmount: number
   operatorId: number
 }
+
+export const StationSchema = object({
+  name: string('充电站名称不能为空', [
+    maxLength(30, '充电站名称不能超过30个字符'),
+  ]),
+  url: string([url('链接格式不正确')]),
+})
+
+export type StationData = Output<typeof StationSchema>
