@@ -1,12 +1,31 @@
 'use client'
 
+import { useState } from 'react'
+import Link from 'next/link'
 import useLocalStorageState from 'use-local-storage-state'
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
+  KeyboardSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
 
 import { StationData } from '@/app/types'
-import Link from 'next/link'
-import { useState } from 'react'
 import StationEditModal from './edit-modal'
 import StationDeleteConfirmModal from './confirm-delete-modal'
+import SortableStationItem, { RefStationItem } from './sortable-station-item'
 
 export default function Settings() {
   const [stations, setStations] = useLocalStorageState<StationData[]>(
@@ -18,6 +37,7 @@ export default function Settings() {
   const [isEditModalOpen, setEditModalOpen] = useState(false)
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
   const [targetStationIdx, setTargetStationIdx] = useState(-1)
+  const [dndActiveId, setDndActiveId] = useState<string | null>(null)
 
   function openNewStationModal() {
     setTargetStationIdx(-1)
@@ -32,6 +52,31 @@ export default function Settings() {
   function openStationDeleteConfirmModal(idx: number) {
     setTargetStationIdx(idx)
     setDeleteModalOpen(true)
+  }
+
+  const sensors = useSensors(
+    useSensor(TouchSensor),
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  function handleDragStart(event: DragStartEvent) {
+    const { active } = event
+    setDndActiveId(active.id as string)
+  }
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event
+
+    if (over !== null && active.id !== over.id) {
+      const activeIndex = stations.findIndex(s => s.url === active.id)
+      const overIndex = stations.findIndex(s => s.url === over.id)
+
+      setStations(stations => arrayMove(stations, activeIndex, overIndex))
+    }
+    setDndActiveId(null)
   }
 
   return (
@@ -62,40 +107,35 @@ export default function Settings() {
       <div className="w-full text-center flex-1">
         {stations.length > 0 ? (
           <ul className="border-b dark:border-neutral-700">
-            {stations.map((station, idx) => (
-              <li
-                key={idx}
-                className="flex items-center relative border-t dark:border-neutral-700 px-4 text-left hover:cursor-pointer hover:bg-neutral-200/20 overflow-hidden"
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={stations.map(s => s.url)}
+                strategy={verticalListSortingStrategy}
               >
-                <span className="absolute -bottom-5 -right-4 text-8xl font-black opacity-10 font-mono rotate-12 -z-10">
-                  {idx + 1}
-                </span>
-
-                <button className="icon-[iconoir--menu] w-5 h-5 flex-shrink-0 mr-4" />
-
-                <div
-                  className="overflow-hidden mr-4 flex-1 py-3"
-                  onClick={() => openStationEditModal(idx)}
-                >
-                  <div className="flex items-center">
-                    <span className="font-bold mr-2 truncate">
-                      {station.name}
-                    </span>
-                    <span className="icon-[iconoir--edit-pencil] w-4 h-4" />
-                  </div>
-                  <div className="text-xs mt-1 opacity-80 overflow-scroll">
-                    {station.url}
-                  </div>
-                </div>
-
-                <button
-                  className="p-3 pt-4 rounded-lg text-white bg-gradient-to-br from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800"
-                  onClick={() => openStationDeleteConfirmModal(idx)}
-                >
-                  <span className="icon-[iconoir--trash] w-5 h-5" />
-                </button>
-              </li>
-            ))}
+                {stations.map((station, idx) => (
+                  <SortableStationItem
+                    key={station.url}
+                    id={station.url}
+                    idx={idx}
+                    station={station}
+                    openStationEditModal={openStationEditModal}
+                    openStationDeleteConfirmModal={
+                      openStationDeleteConfirmModal
+                    }
+                  />
+                ))}
+              </SortableContext>
+              <DragOverlay>
+                {dndActiveId !== null && (
+                  <RefStationItem id={dndActiveId} stations={stations} />
+                )}
+              </DragOverlay>
+            </DndContext>
           </ul>
         ) : (
           <div className="opacity-80 text-sm">还没有添加充电站二维码链接…</div>
@@ -104,7 +144,7 @@ export default function Settings() {
 
       <button
         type="button"
-        className="mt-4 mx-auto flex items-center rounded-md px-8 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 fixed bottom-16 z-10"
+        className="mt-4 mx-auto flex items-center rounded-md px-8 py-2.5 font-medium text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80"
         onClick={openNewStationModal}
       >
         <span className="mr-2">添加新充电站</span>
