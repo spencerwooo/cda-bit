@@ -40,10 +40,20 @@ export default function Home() {
 
       <div className="mt-32 px-4 min-w-[20rem]">
         <div className="mb-8 relative inline-block">
-          <span className="icon-[iconoir--ev-plug-charging] w-8 h-8"></span>
-          <div className="absolute bottom-0.5 -right-1">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-          </div>
+          <span className="icon-[iconoir--ev-plug] w-9 h-9"></span>
+          {/* <span className="icon-[iconoir--flash] w-5 h-5 bg-lime-500 animate-pulse absolute bottom-0 -right-1"></span> */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 36 36"
+            className="absolute bottom-0 -right-1 w-5 h-5 animate-pulse stroke-lime-500 fill-lime-500"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M13 10V3L5 14h6v7l8-11h-6Z"
+            />
+          </svg>
         </div>
         <div className="grid md:grid-cols-2 gap-4 md:gap-6">
           {stations.length === 0 ? (
