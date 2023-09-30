@@ -122,7 +122,7 @@ export default function Settings() {
               >
                 {stations.map((station, idx) => (
                   <SortableStationItem
-                    key={idx}
+                    key={station.url}
                     id={station.url}
                     idx={idx}
                     station={station}

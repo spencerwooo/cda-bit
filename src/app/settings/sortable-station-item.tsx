@@ -55,7 +55,7 @@ export default function SortableStationItem({
 
   return (
     <li
-      className="flex items-center touch-manipulation relative border-t dark:border-neutral-700 pl-2 pr-4 text-left overflow-hidden hover:cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800"
+      className="flex items-center touch-none relative border-t dark:border-neutral-700 pl-2 pr-4 text-left overflow-hidden hover:cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800"
       ref={setNodeRef}
       style={style}
       {...attributes}
