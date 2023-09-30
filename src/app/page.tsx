@@ -45,7 +45,7 @@ export default function Home() {
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
           </div>
         </div>
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-4 md:gap-6">
           {stations.length === 0 ? (
             <Onboarding />
           ) : (

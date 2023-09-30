@@ -67,11 +67,19 @@ export default function Channel({
 
   return (
     <div className="py-2">
-      <div className="font-bold">{name}</div>
+      <a
+        className="text-lg font-medium underline flex items-center"
+        href={station}
+        target="_blank"
+        rel="noopener"
+      >
+        {name}
+        <span className="icon-[iconoir--open-new-window] w-4 h-4 ml-2"></span>
+      </a>
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <span className="text-sm opacity-60">{deviceName}</span>
-          <span className="icon-[iconoir--pin-alt] w-4 h-4 ml-1"></span>
+          <span className="icon-[iconoir--pin-alt] w-3.5 h-3.5 ml-1"></span>
         </div>
         {isValidating ? (
           <span className="icon-[iconoir--refresh-double] w-3 h-3 ml-1 animate-spin"></span>
