@@ -1,8 +1,4 @@
-import {
-  useSortable,
-  defaultAnimateLayoutChanges,
-  AnimateLayoutChanges,
-} from '@dnd-kit/sortable'
+import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { forwardRef } from 'react'
 
@@ -42,6 +38,7 @@ export default function SortableStationItem({
 }) {
   const {
     attributes,
+    isDragging,
     listeners,
     setNodeRef,
     setActivatorNodeRef,
@@ -49,21 +46,18 @@ export default function SortableStationItem({
     transition,
   } = useSortable({ id })
   const style = {
+    opacity: isDragging ? 0.2 : 1,
     transform: CSS.Transform.toString(transform),
     transition,
   }
 
   return (
     <li
-      className="flex items-center touch-none relative border-t dark:border-neutral-700 pl-2 pr-4 text-left overflow-hidden hover:cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800"
+      className="flex items-center touch-none bg-white dark:bg-neutral-900 relative border-t dark:border-neutral-700 pl-2 pr-4 text-left overflow-hidden hover:cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800"
       ref={setNodeRef}
       style={style}
       {...attributes}
     >
-      <span className="absolute -bottom-5 -right-4 text-8xl font-black opacity-10 font-mono rotate-12 -z-10">
-        {idx + 1}
-      </span>
-
       <button
         ref={setActivatorNodeRef}
         className="p-2 pt-3 flex-shrink-0 rounded-lg hover:cursor-move focus:outline-none hover:bg-neutral-100 focus:ring-4 focus:ring-neutral-200 dark:hover:bg-neutral-700 dark:hover:border-neutral-600 dark:focus:ring-neutral-700"

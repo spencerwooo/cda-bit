@@ -5,14 +5,11 @@ import Link from 'next/link'
 import useLocalStorageState from 'use-local-storage-state'
 import {
   closestCenter,
-  defaultDropAnimationSideEffects,
   DndContext,
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
-  DropAnimation,
   KeyboardSensor,
-  MeasuringStrategy,
   PointerSensor,
   TouchSensor,
   useSensor,
