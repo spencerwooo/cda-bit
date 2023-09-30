@@ -96,17 +96,18 @@ export default function Settings() {
       <div className="flex w-full items-center justify-between p-4">
         <Link
           href="/"
-          className="flex items-center text-neutral-900 bg-white border border-neutral-300 focus:outline-none hover:bg-neutral-100 focus:ring-4 focus:ring-neutral-200 font-medium rounded-lg text-sm px-4 py-2 mr-2 dark:bg-neutral-800 dark:text-white dark:border-neutral-600 dark:hover:bg-neutral-700 dark:hover:border-neutral-600 dark:focus:ring-neutral-700"
+          className="w-24 flex justify-center items-center text-neutral-900 bg-white border border-neutral-300 focus:outline-none hover:bg-neutral-100 focus:ring-4 focus:ring-neutral-200 font-medium rounded-lg text-sm px-4 py-2 mr-2 dark:bg-neutral-800 dark:text-white dark:border-neutral-600 dark:hover:bg-neutral-700 dark:hover:border-neutral-600 dark:focus:ring-neutral-700"
         >
           <span className="icon-[iconoir--arrow-left] w-4 h-4"></span>
           <span className="font-medium ml-2">返回</span>
         </Link>
-        <div className="font-bold">配置充电站列表</div>
+        <div className="font-bold">充电站列表</div>
+        <div className="w-28" />
       </div>
 
-      <div className="w-full text-center flex-1">
+      <div className="mx-auto md:max-w-xl w-full text-center flex-1">
         {stations.length > 0 ? (
-          <ul className="border-b dark:border-neutral-700">
+          <ul className="border-b dark:border-neutral-700 md:border-none md:space-y-4">
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}

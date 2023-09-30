@@ -35,8 +35,9 @@ export default function Home() {
         alt="Electric bike charging station (Header)"
         src={evHeaderImg}
         placeholder="blur"
-        className="w-full absolute top-0 left-0 right-0 -z-10 object-cover object-bottom h-[16.5rem]"
+        className="w-full h-[18rem] md:w-[32rem] absolute top-0 right-0 -z-10 object-cover object-bottom"
       />
+
       <div className="mt-32 px-4 min-w-[20rem]">
         <div className="mb-8 relative inline-block">
           <span className="icon-[iconoir--ev-plug-charging] w-8 h-8"></span>

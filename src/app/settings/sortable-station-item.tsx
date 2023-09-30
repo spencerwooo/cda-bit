@@ -13,7 +13,7 @@ export const RefStationItem = forwardRef<
   return (
     <div
       {...props}
-      className="border-b dark:border-neutral-700"
+      className="border-b md:border-none dark:border-neutral-700"
       ref={ref as React.Ref<HTMLDivElement>}
     >
       <SortableStationItem
@@ -57,7 +57,7 @@ export default function SortableStationItem({
 
   return (
     <li
-      className="flex items-center touch-none bg-white dark:bg-neutral-900 relative border-t dark:border-neutral-700 pl-2 pr-4 text-left overflow-hidden hover:cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800"
+      className="flex items-center touch-none bg-white dark:bg-neutral-800 relative border-t md:border md:rounded-md md:shadow-lg md:shadow-neutral-200/50 md:dark:shadow-neutral-700/50 dark:border-neutral-700 pl-2 pr-4 text-left overflow-hidden hover:cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-700"
       ref={setNodeRef}
       style={style}
       {...attributes}

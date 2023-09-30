@@ -30,7 +30,7 @@ export default function StationDeleteConfirmModal({
 
   return (
     <LayoutModal isOpen={isOpen} closeModal={closeModal}>
-      <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-xl bg-white dark:bg-neutral-600 dark:text-white p-6 text-left align-middle shadow-xl transition-all">
+      <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-xl bg-white dark:bg-neutral-700 dark:text-white p-6 text-left align-middle shadow-xl transition-all">
         <Dialog.Title
           as="h3"
           className="flex items-center text-lg font-bold leading-6 text-red-700 dark:text-red-400"
