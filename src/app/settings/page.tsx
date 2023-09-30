@@ -12,6 +12,7 @@ import {
   KeyboardSensor,
   MeasuringStrategy,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
@@ -55,6 +56,7 @@ export default function Settings() {
   }
 
   const sensors = useSensors(
+    useSensor(TouchSensor),
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
@@ -133,9 +135,9 @@ export default function Settings() {
                 ))}
               </SortableContext>
               <DragOverlay>
-                {dndActiveId !== null ? (
+                {dndActiveId !== null && (
                   <RefStationItem id={dndActiveId} stations={stations} />
-                ) : null}
+                )}
               </DragOverlay>
             </DndContext>
           </ul>

@@ -13,13 +13,13 @@ export const RefStationItem = forwardRef<
   HTMLDivElement,
   { id: string; stations: StationData[] }
 >(({ id, stations, ...props }, ref) => {
-  const idx = stations.findIndex(station => station.url === id)
+  const station = stations.find(station => station.url === id)
   return (
     <div {...props} ref={ref as React.Ref<HTMLDivElement>}>
       <SortableStationItem
         id={id}
-        idx={idx}
-        station={stations[idx]}
+        idx={-1}
+        station={station!}
         openStationEditModal={() => {}}
         openStationDeleteConfirmModal={() => {}}
       />
@@ -58,7 +58,7 @@ export default function SortableStationItem({
 
   return (
     <li
-      className="flex items-center relative bg-white border-t dark:border-neutral-700 pl-2 pr-4 text-left overflow-hidden hover:cursor-pointer hover:bg-neutral-50"
+      className="flex items-center touch-manipulation relative border-t dark:border-neutral-700 pl-2 pr-4 text-left overflow-hidden hover:cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800"
       ref={setNodeRef}
       style={style}
       {...attributes}
