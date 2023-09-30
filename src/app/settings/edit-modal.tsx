@@ -3,6 +3,7 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { ValiError, parse } from 'valibot'
+import toast from 'react-hot-toast'
 
 import { StationData, StationSchema } from '@/app/types'
 import LayoutModal from './layout-modal'
@@ -18,8 +19,6 @@ export default function StationEditModal({
 }) {
   const [isOpen, setIsOpen] = openState
   const [stations, setStations] = stationsState
-
-  const [formError, setFormError] = useState<string>('')
 
   function closeModal() {
     setIsOpen(false)
@@ -41,6 +40,10 @@ export default function StationEditModal({
         )
         setStations(newStations)
       } else {
+        // check for duplicated station based on url
+        if (stations.some(station => station.url === editedStation.url)) {
+          throw new Error('该充电站已存在')
+        }
         // add new station
         const newStations = [...stations, editedStation]
         setStations(newStations)
@@ -48,11 +51,8 @@ export default function StationEditModal({
 
       closeModal()
     } catch (error) {
-      if (error instanceof ValiError) {
-        setFormError(error.message)
-        setTimeout(() => {
-          setFormError('')
-        }, 1000 * 5)
+      if (error instanceof ValiError || error instanceof Error) {
+        toast.error(error.message)
       }
     }
   }
@@ -66,13 +66,6 @@ export default function StationEditModal({
         >
           {stationEditIdx >= 0 ? '修改' : '添加新的'}充电站
         </Dialog.Title>
-
-        {formError && (
-          <div className="mt-4 relative p-2 text-red-800 border-l-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800">
-            <span className="absolute top-3 left-2 icon-[iconoir--warning-circle] w-4 h-4"></span>
-            <span className="ml-6">{formError}</span>
-          </div>
-        )}
 
         <form onSubmit={handleSubmit}>
           <div className="mt-4">

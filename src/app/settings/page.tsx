@@ -5,10 +5,12 @@ import Link from 'next/link'
 import useLocalStorageState from 'use-local-storage-state'
 import {
   closestCenter,
+  defaultDropAnimationSideEffects,
   DndContext,
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
+  DropAnimation,
   KeyboardSensor,
   MeasuringStrategy,
   PointerSensor,
@@ -62,7 +64,6 @@ export default function Settings() {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   )
-  const measuringConfig = { droppable: { strategy: MeasuringStrategy.Always } }
 
   function handleDragStart(event: DragStartEvent) {
     const { active } = event
@@ -73,11 +74,10 @@ export default function Settings() {
     const { active, over } = event
 
     if (over !== null && active.id !== over.id) {
-      setStations(stations => {
-        const oldIndex = stations.findIndex(s => s.url === active.id)
-        const newIndex = stations.findIndex(s => s.url === over.id)
-        return arrayMove(stations, oldIndex, newIndex)
-      })
+      const activeIndex = stations.findIndex(s => s.url === active.id)
+      const overIndex = stations.findIndex(s => s.url === over.id)
+
+      setStations(stations => arrayMove(stations, activeIndex, overIndex))
     }
     setDndActiveId(null)
   }
@@ -112,7 +112,6 @@ export default function Settings() {
           <ul className="border-b dark:border-neutral-700">
             <DndContext
               sensors={sensors}
-              measuring={measuringConfig}
               collisionDetection={closestCenter}
               onDragStart={handleDragStart}
               onDragEnd={handleDragEnd}
@@ -148,7 +147,7 @@ export default function Settings() {
 
       <button
         type="button"
-        className="mt-4 mx-auto flex items-center rounded-md px-8 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 fixed bottom-16 z-10"
+        className="mt-4 mx-auto flex items-center rounded-md px-8 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80"
         onClick={openNewStationModal}
       >
         <span className="mr-2">添加新充电站</span>

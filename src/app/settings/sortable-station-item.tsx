@@ -27,9 +27,6 @@ export const RefStationItem = forwardRef<
   )
 })
 
-const animateLayoutChanges: AnimateLayoutChanges = args =>
-  defaultAnimateLayoutChanges({ ...args, wasDragging: true })
-
 export default function SortableStationItem({
   id,
   idx,
@@ -50,7 +47,7 @@ export default function SortableStationItem({
     setActivatorNodeRef,
     transform,
     transition,
-  } = useSortable({ animateLayoutChanges, id })
+  } = useSortable({ id })
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
