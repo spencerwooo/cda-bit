@@ -11,7 +11,11 @@ export const RefStationItem = forwardRef<
 >(({ id, stations, ...props }, ref) => {
   const station = stations.find(station => station.url === id)
   return (
-    <div {...props} ref={ref as React.Ref<HTMLDivElement>}>
+    <div
+      {...props}
+      className="border-b dark:border-neutral-700"
+      ref={ref as React.Ref<HTMLDivElement>}
+    >
       <SortableStationItem
         id={id}
         idx={-1}
