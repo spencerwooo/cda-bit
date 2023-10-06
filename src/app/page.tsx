@@ -48,9 +48,9 @@ export default function Home() {
             className="absolute bottom-0 -right-1 w-5 h-5 animate-pulse stroke-lime-500 fill-lime-500"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.5"
               d="M13 10V3L5 14h6v7l8-11h-6Z"
             />
           </svg>

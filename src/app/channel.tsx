@@ -21,7 +21,7 @@ export default function Channel({
 }) {
   const channelUrl = `/api?station=${encodeURIComponent(station)}`
 
-  const { data, error, isLoading, isValidating } = useSWR<ChannelDetails>(
+  const { data, error, isLoading, isValidating, mutate } = useSWR<ChannelDetails>(
     channelUrl,
     fetcher,
     { refreshInterval: 1000 * 30 }
@@ -66,7 +66,7 @@ export default function Channel({
   }
 
   return (
-    <div className="py-2">
+    <div className="p-2 -mx-2">
       <a
         className="text-lg font-medium underline flex items-center"
         href={station}
@@ -81,9 +81,7 @@ export default function Channel({
           <span className="text-sm opacity-60">{deviceName}</span>
           <span className="icon-[iconoir--pin-alt] w-3.5 h-3.5 ml-1"></span>
         </div>
-        {isValidating ? (
-          <span className="icon-[iconoir--refresh-double] w-3 h-3 ml-1 animate-spin"></span>
-        ) : null}
+        <button className={`icon-[iconoir--refresh-double] w-3 h-3 ml-1 ${isValidating && 'animate-spin'}`} onClick={() =>  mutate()}></button>
       </div>
       <ul className="grid grid-cols-5 mt-2 gap-2">
         {Object.keys(channelMap).map(key => (

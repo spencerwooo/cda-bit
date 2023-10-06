@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
   }
 
   // fetch html
-  const res = await fetch(station, { next: { revalidate: 1 * 60 } })
+  const res = await fetch(station, { cache: 'no-store' })
   const data = await res.text()
 
   // // parse markup with cheerio
