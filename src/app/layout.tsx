@@ -1,5 +1,5 @@
 import './globals.css'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 
@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     apple: [{ sizes: '180x180', url: '/apple-touch-icon.png' }],
   },
   manifest: 'site.webmanifest',
+}
+
+export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#BECB4D' },
     { media: '(prefers-color-scheme: dark)', color: '#171717' },
