@@ -56,14 +56,14 @@ export default function SortableStationItem({
 
   return (
     <li
-      className="flex items-center touch-none bg-white dark:bg-neutral-800 relative border-t md:border md:rounded-md md:shadow-lg md:shadow-neutral-200/50 md:dark:shadow-neutral-700/50 dark:border-neutral-700 pl-2 pr-4 text-left overflow-hidden hover:cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-700"
+      className="flex items-center bg-white dark:bg-neutral-800 relative border-t md:border md:rounded-md md:shadow-lg md:shadow-neutral-200/50 md:dark:shadow-neutral-700/50 dark:border-neutral-700 pl-2 pr-4 text-left overflow-hidden hover:cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-700"
       ref={setNodeRef}
       style={style}
       {...attributes}
     >
       <button
         ref={setActivatorNodeRef}
-        className="p-2 pt-3 flex-shrink-0 rounded-lg hover:cursor-move focus:outline-none hover:bg-neutral-100 focus:ring-4 focus:ring-neutral-200 dark:hover:bg-neutral-700 dark:hover:border-neutral-600 dark:focus:ring-neutral-700"
+        className="touch-none p-2 pt-3 flex-shrink-0 rounded-lg hover:cursor-move focus:outline-none hover:bg-neutral-100 focus:ring-4 focus:ring-neutral-200 dark:hover:bg-neutral-700 dark:hover:border-neutral-600 dark:focus:ring-neutral-700"
         {...listeners}
       >
         <span className="icon-[iconoir--menu] w-5 h-5"></span>
