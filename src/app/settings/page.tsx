@@ -26,6 +26,8 @@ import { StationData } from '@/app/types'
 import StationEditModal from './edit-modal'
 import StationDeleteConfirmModal from './confirm-delete-modal'
 import SortableStationItem, { RefStationItem } from './sortable-station-item'
+import ExportModal from './export-modal'
+import ImportModal from './import-modal'
 
 export default function Settings() {
   const [stations, setStations] = useLocalStorageState<StationData[]>('stations', {
@@ -33,6 +35,8 @@ export default function Settings() {
   })
   const [isEditModalOpen, setEditModalOpen] = useState(false)
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [isImportModalOpen, setImportModalOpen] = useState(false)
+  const [isExportModalOpen, setExportModalOpen] = useState(false)
   const [targetStationIdx, setTargetStationIdx] = useState(-1)
   const [dndActiveId, setDndActiveId] = useState<string | null>(null)
 
@@ -49,6 +53,14 @@ export default function Settings() {
   function openStationDeleteConfirmModal(idx: number) {
     setTargetStationIdx(idx)
     setDeleteModalOpen(true)
+  }
+
+  function openImportModal() {
+    setImportModalOpen(true)
+  }
+
+  function openExportModal() {
+    setExportModalOpen(true)
   }
 
   const sensors = useSensors(
@@ -89,6 +101,12 @@ export default function Settings() {
         stationsState={[stations, setStations]}
         stationEditIdx={targetStationIdx}
       />
+
+      <ImportModal
+        openState={[isImportModalOpen, setImportModalOpen]}
+        stationsState={[stations, setStations]}
+      />
+      <ExportModal openState={[isExportModalOpen, setExportModalOpen]} stations={stations} />
 
       <div className="flex w-full items-center justify-between p-4">
         <Link
@@ -146,9 +164,13 @@ export default function Settings() {
       </button>
 
       <footer className="text-center mt-8 mb-4">
-        <button className="mr-2 text-sm underline">导出配置</button>
+        <button className="mr-2 text-sm underline" onClick={openImportModal}>
+          导入配置
+        </button>
         <span>⋅</span>
-        <button className="ml-2 text-sm underline">导入配置</button>
+        <button className="ml-2 text-sm underline" onClick={openExportModal}>
+          导出配置
+        </button>
         <div className="flex items-center mt-2 text-xs text-gray-500 dark:text-gray-200">
           <span className="icon-[iconoir--warning-hexagon] w-3 h-3 mr-1"></span>
           <span>配置文件安全存放于浏览器本地存储中</span>
