@@ -12,13 +12,7 @@ async function fetcher(url: string) {
   return res.json()
 }
 
-export default function Channel({
-  name,
-  station,
-}: {
-  name: string
-  station: string
-}) {
+export default function Channel({ name, station }: { name: string; station: string }) {
   const channelUrl = `/api?station=${encodeURIComponent(station)}`
 
   const { data, error, isLoading, isValidating, mutate } = useSWR<ChannelDetails>(
@@ -81,10 +75,15 @@ export default function Channel({
           <span className="text-sm opacity-60">{deviceName}</span>
           <span className="icon-[iconoir--pin-alt] w-3.5 h-3.5 ml-1"></span>
         </div>
-        <button className={`icon-[iconoir--refresh-double] w-3 h-3 ml-1 ${isValidating && 'animate-spin'}`} onClick={() =>  mutate()}></button>
+        <button
+          className={`icon-[iconoir--refresh-double] w-3 h-3 ml-1 ${
+            isValidating && 'animate-spin'
+          }`}
+          onClick={() => mutate()}
+        ></button>
       </div>
       <ul className="grid grid-cols-5 mt-2 gap-2">
-        {Object.keys(channelMap).map(key => (
+        {Object.keys(channelMap).map((key) => (
           <li
             key={key}
             className={`relative border-y-2 p-2 pr-3 ${
@@ -100,9 +99,7 @@ export default function Channel({
               />
             )}
             <div className="text-xs">{key}</div>
-            <div className="text-sm">
-              {statusMap[channelMap[key].channelStatus][0]}
-            </div>
+            <div className="text-sm">{statusMap[channelMap[key].channelStatus][0]}</div>
           </li>
         ))}
       </ul>

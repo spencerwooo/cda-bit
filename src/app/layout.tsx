@@ -26,19 +26,11 @@ export const viewport: Viewport = {
   ],
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.className} dark:bg-neutral-900 dark:text-white`}
-      >
-        <Toaster
-          toastOptions={{ error: { style: { background: '#fecdd3' } } }}
-        />
+      <body className={`${inter.className} dark:bg-neutral-900 dark:text-white`}>
+        <Toaster toastOptions={{ error: { style: { background: '#fecdd3' } } }} />
         {children}
       </body>
     </html>

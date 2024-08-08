@@ -41,7 +41,7 @@ export default function StationEditModal({
         setStations(newStations)
       } else {
         // check for duplicated station based on url
-        if (stations.some(station => station.url === editedStation.url)) {
+        if (stations.some((station) => station.url === editedStation.url)) {
           throw new Error('该充电站已存在')
         }
         // add new station
@@ -77,9 +77,7 @@ export default function StationEditModal({
               type="text"
               name="name"
               placeholder="研究生公寓楼下"
-              defaultValue={
-                stationEditIdx >= 0 ? stations[stationEditIdx]?.name : ''
-              }
+              defaultValue={stationEditIdx >= 0 ? stations[stationEditIdx]?.name : ''}
               className="bg-neutral-50 border border-neutral-300 text-neutral-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-neutral-800 dark:border-neutral-600 dark:placeholder-neutral-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
           </div>
@@ -92,9 +90,7 @@ export default function StationEditModal({
               type="url"
               name="url"
               placeholder="http://wx.99cda.com/cda-wx/chargingBike.do?q=..."
-              defaultValue={
-                stationEditIdx >= 0 ? stations[stationEditIdx]?.url : ''
-              }
+              defaultValue={stationEditIdx >= 0 ? stations[stationEditIdx]?.url : ''}
               className="bg-neutral-50 border border-neutral-300 text-neutral-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-neutral-800 dark:border-neutral-600 dark:placeholder-neutral-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
           </div>

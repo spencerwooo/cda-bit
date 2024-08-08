@@ -5,27 +5,26 @@ import { forwardRef } from 'react'
 import { StationData } from '../types'
 
 // eslint-disable-next-line react/display-name
-export const RefStationItem = forwardRef<
-  HTMLDivElement,
-  { id: string; stations: StationData[] }
->(({ id, stations, ...props }, ref) => {
-  const station = stations.find(station => station.url === id)
-  return (
-    <div
-      {...props}
-      className="border-b md:border-none dark:border-neutral-700"
-      ref={ref as React.Ref<HTMLDivElement>}
-    >
-      <SortableStationItem
-        id={id}
-        idx={-1}
-        station={station!}
-        openStationEditModal={() => {}}
-        openStationDeleteConfirmModal={() => {}}
-      />
-    </div>
-  )
-})
+export const RefStationItem = forwardRef<HTMLDivElement, { id: string; stations: StationData[] }>(
+  ({ id, stations, ...props }, ref) => {
+    const station = stations.find((station) => station.url === id)
+    return (
+      <div
+        {...props}
+        className="border-b md:border-none dark:border-neutral-700"
+        ref={ref as React.Ref<HTMLDivElement>}
+      >
+        <SortableStationItem
+          id={id}
+          idx={-1}
+          station={station!}
+          openStationEditModal={() => {}}
+          openStationDeleteConfirmModal={() => {}}
+        />
+      </div>
+    )
+  }
+)
 
 export default function SortableStationItem({
   id,
@@ -70,17 +69,12 @@ export default function SortableStationItem({
         <span className="icon-[iconoir--menu] w-5 h-5"></span>
       </button>
 
-      <div
-        className="overflow-hidden px-2 flex-1 py-3"
-        onClick={() => openStationEditModal(idx)}
-      >
+      <div className="overflow-hidden px-2 flex-1 py-3" onClick={() => openStationEditModal(idx)}>
         <div className="flex items-center">
           <span className="font-bold mr-2 truncate">{station.name}</span>
           <span className="icon-[iconoir--edit-pencil] w-4 h-4" />
         </div>
-        <div className="text-xs mt-1 opacity-80 overflow-scroll">
-          {station.url}
-        </div>
+        <div className="text-xs mt-1 opacity-80 overflow-scroll">{station.url}</div>
       </div>
 
       <button

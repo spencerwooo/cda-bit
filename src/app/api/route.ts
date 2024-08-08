@@ -38,9 +38,6 @@ export async function GET(req: NextRequest) {
     const details = JSON.parse(rawDetails)
     return NextResponse.json(details)
   } catch (error) {
-    return NextResponse.json(
-      { error: `error parsing details: ${error}` },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: `error parsing details: ${error}` }, { status: 500 })
   }
 }

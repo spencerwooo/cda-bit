@@ -62,13 +62,7 @@ export default function Home() {
             stations.map((station, idx) => {
               const parsed = safeParse(StationSchema, station)
               if (parsed.success) {
-                return (
-                  <Channel
-                    key={idx}
-                    name={parsed.output.name}
-                    station={parsed.output.url}
-                  />
-                )
+                return <Channel key={idx} name={parsed.output.name} station={parsed.output.url} />
               } else {
                 return (
                   <div key={idx}>

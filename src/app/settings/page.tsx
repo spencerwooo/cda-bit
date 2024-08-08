@@ -28,12 +28,9 @@ import StationDeleteConfirmModal from './confirm-delete-modal'
 import SortableStationItem, { RefStationItem } from './sortable-station-item'
 
 export default function Settings() {
-  const [stations, setStations] = useLocalStorageState<StationData[]>(
-    'stations',
-    {
-      defaultValue: [],
-    }
-  )
+  const [stations, setStations] = useLocalStorageState<StationData[]>('stations', {
+    defaultValue: [],
+  })
   const [isEditModalOpen, setEditModalOpen] = useState(false)
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
   const [targetStationIdx, setTargetStationIdx] = useState(-1)
@@ -71,10 +68,10 @@ export default function Settings() {
     const { active, over } = event
 
     if (over !== null && active.id !== over.id) {
-      const activeIndex = stations.findIndex(s => s.url === active.id)
-      const overIndex = stations.findIndex(s => s.url === over.id)
+      const activeIndex = stations.findIndex((s) => s.url === active.id)
+      const overIndex = stations.findIndex((s) => s.url === over.id)
 
-      setStations(stations => arrayMove(stations, activeIndex, overIndex))
+      setStations((stations) => arrayMove(stations, activeIndex, overIndex))
     }
     setDndActiveId(null)
   }
@@ -115,7 +112,7 @@ export default function Settings() {
               onDragEnd={handleDragEnd}
             >
               <SortableContext
-                items={stations.map(s => s.url)}
+                items={stations.map((s) => s.url)}
                 strategy={verticalListSortingStrategy}
               >
                 {stations.map((station, idx) => (
@@ -125,16 +122,12 @@ export default function Settings() {
                     idx={idx}
                     station={station}
                     openStationEditModal={openStationEditModal}
-                    openStationDeleteConfirmModal={
-                      openStationDeleteConfirmModal
-                    }
+                    openStationDeleteConfirmModal={openStationDeleteConfirmModal}
                   />
                 ))}
               </SortableContext>
               <DragOverlay>
-                {dndActiveId !== null && (
-                  <RefStationItem id={dndActiveId} stations={stations} />
-                )}
+                {dndActiveId !== null && <RefStationItem id={dndActiveId} stations={stations} />}
               </DragOverlay>
             </DndContext>
           </ul>
@@ -152,9 +145,14 @@ export default function Settings() {
         <span className="icon-[iconoir--add-circle] w-5 h-5"></span>
       </button>
 
-      <footer className="flex items-center text-xs mt-8 mb-4">
-        <span className="icon-[iconoir--warning-hexagon] w-3 h-3 mr-1"></span>
-        <span>配置文件安全存放于浏览器本地存储中</span>
+      <footer className="text-center mt-8 mb-4">
+        <button className="mr-2 text-sm underline">导出配置</button>
+        <span>⋅</span>
+        <button className="ml-2 text-sm underline">导入配置</button>
+        <div className="flex items-center mt-2 text-xs text-gray-500 dark:text-gray-200">
+          <span className="icon-[iconoir--warning-hexagon] w-3 h-3 mr-1"></span>
+          <span>配置文件安全存放于浏览器本地存储中</span>
+        </div>
       </footer>
     </main>
   )
