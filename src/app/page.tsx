@@ -7,8 +7,10 @@ import useLocalStorageState from 'use-local-storage-state'
 import { safeParse } from 'valibot'
 
 import Channel from '@/app/channel'
-import { StationData, StationSchema } from '@/app/types'
+import { ChannelMap, StationData, StationSchema } from '@/app/types'
 import evHeaderImg from '@/app/header.png'
+import ChannelMapModal from './channel-map-modal'
+import { useState } from 'react'
 
 function Onboarding() {
   return (
@@ -29,8 +31,19 @@ export default function Home() {
     defaultValue: [],
   })
 
+  const [isChannelMapModelOpen, setIsChannelMapModelOpen] = useState(false)
+
+  const [channelMap, setChannelMap] = useState<Partial<ChannelMap>>({})
+  const [channelModalTitle, setChannelModalTitle] = useState('')
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
+      <ChannelMapModal
+        openState={[isChannelMapModelOpen, setIsChannelMapModelOpen]}
+        channelMap={channelMap}
+        channelModalTitle={channelModalTitle}
+      />
+
       <Image
         alt="Electric bike charging station (Header)"
         src={evHeaderImg}
@@ -62,7 +75,16 @@ export default function Home() {
             stations.map((station, idx) => {
               const parsed = safeParse(StationSchema, station)
               if (parsed.success) {
-                return <Channel key={idx} name={parsed.output.name} station={parsed.output.url} />
+                return (
+                  <Channel
+                    key={idx}
+                    name={parsed.output.name}
+                    station={parsed.output.url}
+                    setIsChannelMapModelOpen={setIsChannelMapModelOpen}
+                    setChannelMap={setChannelMap}
+                    setChannelModalTitle={setChannelModalTitle}
+                  />
+                )
               } else {
                 return (
                   <div key={idx}>
