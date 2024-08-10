@@ -1,7 +1,8 @@
 'use client'
 
 import useSWR from 'swr'
-import { ChannelDetails } from './types'
+import { ChannelDetails, ChannelMap } from './types'
+import { Dispatch, SetStateAction } from 'react'
 
 async function fetcher(url: string) {
   const res = await fetch(url)
@@ -12,7 +13,19 @@ async function fetcher(url: string) {
   return res.json()
 }
 
-export default function Channel({ name, station }: { name: string; station: string }) {
+export default function Channel({
+  name,
+  station,
+  setIsChannelMapModelOpen,
+  setChannelMap,
+  setChannelModalTitle,
+}: {
+  name: string
+  station: string
+  setIsChannelMapModelOpen: Dispatch<SetStateAction<boolean>>
+  setChannelMap: Dispatch<SetStateAction<Partial<ChannelMap>>>
+  setChannelModalTitle: Dispatch<SetStateAction<string>>
+}) {
   const channelUrl = `/api?station=${encodeURIComponent(station)}`
 
   const { data, error, isLoading, isValidating, mutate } = useSWR<ChannelDetails>(
@@ -88,6 +101,15 @@ export default function Channel({ name, station }: { name: string; station: stri
     P: ['启动中', 'border-blue-300 bg-blue-300/30'],
   }
 
+  function handleChannelMapModalOpen(
+    clickedChannelMap: Partial<ChannelMap>,
+    clickedChannelMapTitle: string
+  ) {
+    setChannelMap(clickedChannelMap)
+    setChannelModalTitle(clickedChannelMapTitle)
+    setIsChannelMapModelOpen(true)
+  }
+
   return (
     <div className="p-2 -mx-2">
       <a
@@ -115,7 +137,10 @@ export default function Channel({ name, station }: { name: string; station: stri
         {Object.keys(channelMap).map((key) => (
           <li
             key={key}
-            className={`relative border-y-2 p-2 pr-3 ${statusMap[channelMap[key].channelStatus][1]}`}
+            className={`relative cursor-pointer border-y-2 p-2 pr-3 ${statusMap[channelMap[key].channelStatus][1]}`}
+            onClick={() =>
+              handleChannelMapModalOpen(channelMap[key], `${name} - #${key}`)
+            }
           >
             {channelMap[key].channelStatus === 'C' && (
               <span
