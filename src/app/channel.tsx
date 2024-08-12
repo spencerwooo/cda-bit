@@ -138,15 +138,13 @@ export default function Channel({
           <li
             key={key}
             className={`relative cursor-pointer border-y-2 p-2 pr-3 ${statusMap[channelMap[key].channelStatus][1]}`}
-            onClick={() =>
-              handleChannelMapModalOpen(channelMap[key], `${name} - #${key}`)
-            }
+            onClick={() => handleChannelMapModalOpen(channelMap[key], `${name} - #${key}`)}
           >
             {channelMap[key].channelStatus === 'C' && (
               <span
                 className="absolute left-0 bottom-0 right-0 bg-amber-300/30 -z-10"
                 style={{
-                  top: (1 - channelMap[key].chargedTime / (9 * 60)) * 100 + '%',
+                  top: Math.min(1, 1 - channelMap[key].chargedTime / (9 * 60)) * 100 + '%',
                 }}
               />
             )}

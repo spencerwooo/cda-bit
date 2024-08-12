@@ -96,7 +96,7 @@ export default function ChannelMapModal({
             <span
               className="absolute top-0 bottom-0 left-0 -z-10 overflow-hidden"
               style={{
-                right: `${(1 - (channelMap.chargedTime ?? 0) / (9 * 60)) * 100}%`,
+                right: `${Math.min(1, 1 - (channelMap.chargedTime ?? 0) / (9 * 60)) * 100}%`,
                 backgroundImage:
                   'repeating-linear-gradient(45deg, rgba(255, 191, 0, 0.05) 4rem, rgba(255, 191, 0, 0.1) 5rem, rgba(255, 191, 0, 0.2) 6rem, transparent 4rem, transparent 6.83rem)',
                 backgroundSize: '12rem 4rem',
